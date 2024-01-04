@@ -1,11 +1,14 @@
 package main
 
 import (
+	"fmt"
+	"github.com/ANkulagin/voice_mail/cmd/skill/flags"
 	"net/http"
 )
 
 // функция main вызывается автоматически при запуске приложения
 func main() {
+	flags.ParseFlags()
 	if err := run(); err != nil {
 		panic(err)
 	}
@@ -13,7 +16,8 @@ func main() {
 
 // функция run будет полезна при инициализации зависимостей сервера перед запуском
 func run() error {
-	return http.ListenAndServe(`:8080`, http.HandlerFunc(webhook))
+	fmt.Println("Running server on", flags.FlagRunAddr)
+	return http.ListenAndServe(flags.FlagRunAddr, http.HandlerFunc(webhook))
 }
 
 // функция webhook — обработчик HTTP-запроса
